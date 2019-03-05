@@ -2,9 +2,21 @@
 
 public class PlayerController : MonoBehaviour
 {
+
+    [SerializeField]
+    private AudioClip mizuyaru;
+    [SerializeField]
+    private AudioClip mizukumu;
+    private AudioSource audioSource;
+
     public WateringCan hoge;
 
-    void Start(){ hoge = new WateringCan(); }
+    void Start()
+    {
+        hoge = new WateringCan();
+        audioSource = gameObject.GetComponent<AudioSource>();
+    }
+
 
     void OnTriggerStay(Collider other)
     {
@@ -15,6 +27,10 @@ public class PlayerController : MonoBehaviour
                 hoge.RemovedWater();
                 other.GetComponent<Flower>().MinusWhtherPercentage();
                 Debug.Log("水をあげた");
+
+                audioSource.clip = mizuyaru;
+                audioSource.Play();
+
             }
         }
 
@@ -24,6 +40,9 @@ public class PlayerController : MonoBehaviour
             {
                 hoge.ToMaxWaterGase();
                 Debug.Log("水をくんだ");
+
+                audioSource.clip = mizukumu;
+                audioSource.Play();
             }
         }
     }

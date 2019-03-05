@@ -8,9 +8,9 @@ public class Devil : MonoBehaviour
 
     // serialize
     [SerializeField]
-    private float moveSpeed = 1.0f;
+    private float minMoveSpeed = 0.25f;
     [SerializeField]
-    private float moveSpeedEaseOffset = 0.25f;
+    private float maxMoveSpeed = 1.0f;
     [SerializeField]
     private float survivalTime = 1.0f;
 
@@ -23,6 +23,14 @@ public class Devil : MonoBehaviour
     private float deltaTime = 0;
     
     private bool deathFlg { get { return (deathTime < this.elapsedTime) || (this.survivalTime <= this.elapsedTime); } }
+    private float MoveSpeed
+    {
+        get
+        {
+            return Easer.EaseInOut(this.elapsedTime, this.survivalTime,
+                                   this.minMoveSpeed, this.maxMoveSpeed);
+        }
+    }
 
     private void Start ()
     {
@@ -56,7 +64,7 @@ public class Devil : MonoBehaviour
 
     private void Move()
     {
-        this.transform_.position += this.transform_.forward * this.moveSpeed * this.deltaTime;
+        this.transform_.position += this.transform_.forward * this.MoveSpeed * this.deltaTime;
     }
 
     private void Die()

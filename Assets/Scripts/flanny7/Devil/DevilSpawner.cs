@@ -1,20 +1,20 @@
 ﻿using UnityEngine;
 
-public sealed class DevilSpowner
+public sealed class DevilSpawner : MonoBehaviour
 {
     [SerializeField]
     private Transform[] popAreas = null;
     [SerializeField]
-    private GameObject enemyPrefab = null;
+    private GameObject devilPrefab = null;
     [SerializeField]
     private float offsetY = 0.0f;
 
-    public void Spown()
+    public void Spawn()
     {
         var gPos = this.GeneratPopPos();
         var pos = new Vector3(gPos.x, this.offsetY, gPos.y);
 
-        var obj = GameObject.Instantiate(this.enemyPrefab);
+        var obj = GameObject.Instantiate(this.devilPrefab);
         var trans = obj.transform;
         trans.position = pos;
         trans.rotation = this.GeneratAngle();

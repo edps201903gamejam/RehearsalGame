@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && hoge.isWaterd)
             {
                 hoge.RemovedWater();
-                other.GetComponent<Flower>().minusWhtherPercentage();
+                other.GetComponent<Flower>().MinusWhtherPercentage();
                 Debug.Log("水をあげた");
             }
         }

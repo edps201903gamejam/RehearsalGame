@@ -2,19 +2,20 @@
 
 public class Flower : MonoBehaviour
 {
+    public int GrowStage;
+    public int WitherPercentage;
+    public bool IsGrowed;
+    public bool IsWithered;
+
     public Material gStage1;
     public Material gStage2;
     public Material gStage3;
     public Material gStage4;
     public Material wither;
 
-    public int GrowStage;
-    public float WitherPercentage;
-    public bool IsGrowed;
-    public bool IsWithered;
-
-    private int witherTime = 1;
-    private int growTime = 5;
+    private int witherTime = 1;     //[1秒ごと]にパーセンテージを+1する
+    private int growTime = 10;      //1段階成長までの時間
+    private int toWitherPer = 30;   //枯れるまでの時間
     private float timeElapsed1;
     private float timeElapsed2;
     private MeshRenderer render;
@@ -27,35 +28,33 @@ public class Flower : MonoBehaviour
         IsWithered = false;
     }
 
-    public void minusWhtherPercentage()
+    public void MinusWhtherPercentage()
     {
-        if (!IsGrowed && !IsWithered && GrowStage < 4){ WitherPercentage -= 10; }
-        Debug.Log(WitherPercentage);
+        if (!IsGrowed && !IsWithered && GrowStage < 4) WitherPercentage -= 10;
     }
 
-    public float PlusWitherPercentage()
+    private void PlusWitherPercentage()
     {
-        if (!IsWithered){ return WitherPercentage + 1; }
-        else return WitherPercentage;
+        if (!IsWithered) WitherPercentage++;
     }
 
-    public void CheckGrowed()
+    private void CheckGrowed()
     {
-        if (GrowStage >= 3){ IsGrowed = true; }
+        if (GrowStage >= 3) IsGrowed = true;
     }
 
-    public void CheckWhitered()
+    private void CheckWhitered()
     {
-        if (WitherPercentage >= 100){ IsWithered = true; }
-        if(WitherPercentage <= 0){ WitherPercentage = 0; }
+        if (WitherPercentage >= toWitherPer) IsWithered = true;
+        if (WitherPercentage <= 0) WitherPercentage = 0;
     }
 
     private void WitherEvent()
     {
         timeElapsed1 += Time.deltaTime;
-        if (timeElapsed1 >= witherTime && WitherPercentage < 10)
+        if (timeElapsed1 >= witherTime && !IsWithered)
         {
-            WitherPercentage += 2;
+            PlusWitherPercentage();
             timeElapsed1 = 0.0f;
         }
     }
@@ -63,17 +62,16 @@ public class Flower : MonoBehaviour
     private void GrowEvent()
     {
         timeElapsed2 += Time.deltaTime;
-        if (timeElapsed2 >= growTime && GrowStage < 3 && !IsWithered)
+        if (timeElapsed2 >= growTime && !IsGrowed && !IsWithered)
         {
-            GrowStage += 1;
+            GrowStage++;
             timeElapsed2 = 0.0f;
         }
     }
 
-    void Grow()
+    private void Grow()
     {
         render = this.GetComponent<MeshRenderer>();
-
         switch(GrowStage)
         {
             case 0:
@@ -91,7 +89,7 @@ public class Flower : MonoBehaviour
         }
     }
 
-    void Wither()
+    private void Wither()
     {
         render.material = wither;
     }
@@ -102,8 +100,8 @@ public class Flower : MonoBehaviour
         CheckWhitered();
         WitherEvent();
         GrowEvent();
-        if (!IsWithered){ Grow(); }
-        else { Wither(); }
+        if (!IsWithered) Grow();
+        else Wither();
     }
 
 }

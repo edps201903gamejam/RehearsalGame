@@ -10,6 +10,8 @@ public class BadgeComponent : MonoBehaviour
         Excellent = 1,
     }
 
+    public BADGE_TYPE BadgeType { get { return this.type; } set { this.type = value; } }
+
     // Serialize cache
     [SerializeField]
     private Image image_ = null;

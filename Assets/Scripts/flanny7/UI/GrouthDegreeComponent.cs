@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public sealed class GrouthDegreeComponent : MonoBehaviour
 {
+    public float FillAmount { get { return this.fillAmount; } set { this.fillAmount = value; } }
+
     [SerializeField]
     private Image coverImage_ = null;
     [SerializeField]

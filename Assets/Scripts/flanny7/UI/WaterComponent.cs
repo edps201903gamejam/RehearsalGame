@@ -10,6 +10,7 @@ public class WaterComponent : MonoBehaviour
         Filling,
     }
 
+    // SerializeField
     [SerializeField]
     private Image _maskImage = null;
     [SerializeField]
@@ -17,9 +18,11 @@ public class WaterComponent : MonoBehaviour
     [SerializeField]
     private float animationTime = 1.0f;
 
+    // Private
     private STATE state = STATE.Wait;
     private float animElapsedTime = 0.0f;
     
+    // Propaty
     public float FillImageFillAmount
     {
         get { return this._fillImage.fillAmount; }
@@ -27,8 +30,20 @@ public class WaterComponent : MonoBehaviour
     }
 
     public float AnimTimeRate { get { return this.animElapsedTime / this.animationTime; } }
+    
+    // Public Func
+    public void StartEmpty()
+    {
+        this.state = STATE.Empting;
+    }
 
-	private void Start ()
+    public void StartFill()
+    {
+        this.state = STATE.Filling;
+    }
+
+    // Private Func
+    private void Start ()
     {
         // null check
         FyUtility.NullCheck(this._maskImage, this.gameObject);
@@ -70,14 +85,4 @@ public class WaterComponent : MonoBehaviour
                 break;
         }
 	}
-
-    public void StartEmpty()
-    {
-        this.state = STATE.Empting;
-    }
-
-    public void StartFill()
-    {
-        this.state = STATE.Filling;
-    }
 }

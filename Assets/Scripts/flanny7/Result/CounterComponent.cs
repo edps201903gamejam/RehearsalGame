@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class CounterComponent : MonoBehaviour
 {
+    public int FlowerCount { get { return this.flowerCount; } set { this.flowerCount = value; } }
+    public int DieCount { get { return this.dieCount; } set { this.dieCount = value; } }
+
     // Serialize cache
     [SerializeField]
     private Text flowerText_ = null;

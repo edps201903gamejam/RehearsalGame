@@ -58,6 +58,7 @@ public class Devil : MonoBehaviour
 
         if (_other.tag == PLAYER_TAG)
         {
+            if (this.deathFlg) { return; }
             this.deathTime = this.elapsedTime;
         }
     }

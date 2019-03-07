@@ -13,7 +13,7 @@ public class FlowerController : MonoBehaviour
     {
         flowerList = new GameObject[] 
         {
-            flower1,
+            Instantiate(flower1, new Vector3(4.5f, 0.35f, 4.5f), Quaternion.Euler(0, 0, 0)),
             Instantiate(flower1, new Vector3(-4.5f, 0.35f, 4.5f), Quaternion.Euler(0, 0, 0)),
             Instantiate(flower1, new Vector3(4.5f, 0.35f, -4.5f), Quaternion.Euler(0, 0, 0)),
             Instantiate(flower1, new Vector3(-4.5f, 0.35f, -4.5f), Quaternion.Euler(0, 0, 0))
@@ -28,7 +28,7 @@ public class FlowerController : MonoBehaviour
         }
     }
 
-    private GameObject[] GetObjects()
+    public GameObject[] GetObjects()
     {
         return flowerList;
     }

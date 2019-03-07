@@ -121,12 +121,20 @@ public sealed class TriggerUtility
     {
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.tag.Equals(_tag))
+            try
             {
-                return true;
+                if (this.items[i].gameObject.tag.Equals(_tag))
+                {
+                    return true;
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 
         return false;
     }
+
 }

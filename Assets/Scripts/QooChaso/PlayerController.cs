@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        var a = Instantiate(player1, new Vector3(4.5f, 0.35f, 4.5f), Quaternion.Euler(0, 0, 0));
-        var b = Instantiate(player2, new Vector3(-4.5f, 0.0f, 4.5f), Quaternion.Euler(0, 0, 0));
+        var a = Instantiate(player1, new Vector3(3.0f, 0.35f, 0.0f), Quaternion.Euler(0, 0, 0));
+        var b = Instantiate(player2, new Vector3(-3.0f, 0.0f, 0.0f), Quaternion.Euler(0, 0, 0));
     }
 
 }

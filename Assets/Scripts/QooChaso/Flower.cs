@@ -91,8 +91,10 @@ public class Flower : MonoBehaviour
         // 成長について
         growTime = GetRandomFloat(startGrowTime, endGrowTime);
         givenTime = this.elapsedTime;
+
         //枯れゲージを初期化
         witherParcentage = 0;
+
         return point;
     }
 
@@ -124,10 +126,6 @@ public class Flower : MonoBehaviour
                 currentState = State.NONE;
                 this.msRender.material = materials[(int)State.NONE];
                 break;
-            //case State.DIE:
-                //currentState = State.DIE;
-                //this.msRender.material = materials[(int)State.DIE];
-                //break;
         }
     }
 

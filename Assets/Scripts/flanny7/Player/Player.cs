@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
     private int score;      private float elapsedTime = 0.0f;      /// knockback      private float knockbackStartTime = 0.0f;     private bool isKnockback = false;      private void Start ()     {         // cache         this.transform_ = this.transform;         this.animator_ = GetComponent<Animator>();         this.audioSource_ = GetComponent<AudioSource>();          // null check         if (this.transform_ == null) { FyUtility.LogError("transform_ is null."); }         if (this.animator_ == null) { FyUtility.LogError("animator_ is null."); }          // init         this.animState = ANIMATION_STATE.Wait;         this.trigger = new TriggerUtility();
         this.wateringCan = new WateringCan();         this.elapsedTime = 0.0f;          this.knockbackStartTime = 0.0f;         this.isKnockback = false;
         this.score = 0;     }         private void Update ()     {         this.elapsedTime += Time.deltaTime;
+       
         this.UpdateStatus();
 
         if (this.isKnockback) { return; }
@@ -21,7 +22,6 @@ public class Player : MonoBehaviour {
         var isInFlower = this.trigger.ContainWithTag(FLOWER_TAG);
         var isInWater = this.trigger.ContainWithTag(WATER_SPOT_TAG);
         if (isInWater && isInFlower) { Debug.LogWarning("waterとflowerが重なっています"); }
-
         if (isInFlower) { GiftWater(this.trigger.FindGameObjectWithTag(FLOWER_TAG)); }         else if (isInWater) { GetWater(); }
     }
 

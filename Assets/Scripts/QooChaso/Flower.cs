@@ -4,106 +4,117 @@ using UnityEngine;
 
 public class Flower : MonoBehaviour
 {
-    public int GrowStage;
-    public int WitherPercentage;
-    public bool IsGrowed;
-    public bool IsWithered;
-
-    public Material gStage1;
-    public Material gStage2;
-    public Material gStage3;
-    public Material gStage4;
-    public Material wither;
-
-    private int witherTime = 1;     //[1秒ごと]にパーセンテージを+1する
-    private int growTime = 10;      //1段階成長までの時間
-    private int toWitherPer = 30;   //枯れるまでの時間
-    private float timeElapsed1;
-    private float timeElapsed2;
-    private MeshRenderer render;
-
-    public Flower()
+    private enum State
     {
-        GrowStage = 0;
-        WitherPercentage = 0;
-        IsGrowed = false;
-        IsWithered = false;
+        NONE,
+        SPROUT,
+        BUD,
+        FLOWER,
+        DIE
     }
 
-    public void MinusWhtherPercentage()
+    [SerializeField]
+    private Material[] materials = null;
+    [SerializeField]
+    private float startGrowTime;
+    [SerializeField]
+    private float endGrowTime;
+
+    private MeshRenderer msRender;
+    private State currentState;
+
+    private float elapsedTime;
+
+    private float givenTime;
+    private float growTime;
+    private bool CanGrow { get { return growTime <= (elapsedTime - givenTime) && hasWater; } }
+
+    private bool hasWater;
+
+    private void Start()
     {
-        if (!IsGrowed && !IsWithered && GrowStage < 4) WitherPercentage -= 10;
+        msRender = GetComponent<MeshRenderer>();
+
+        currentState = State.NONE;
+        elapsedTime = 0;
+        givenTime = 0;
+        growTime = GetRandomFloat(startGrowTime, endGrowTime);
+        hasWater = true;
     }
 
-    private void PlusWitherPercentage()
+    public void OnUpdate()
     {
-        if (!IsWithered) WitherPercentage++;
+        elapsedTime += Time.deltaTime;
+
+        if (CanGrow) { Grow(); }
     }
 
-    private void CheckGrowed()
+    public int GetPoint()
     {
-        if (GrowStage >= 3) IsGrowed = true;
-    }
+        if (hasWater) { return 0; }
 
-    private void CheckWhitered()
-    {
-        if (WitherPercentage >= toWitherPer) IsWithered = true;
-        if (WitherPercentage <= 0) WitherPercentage = 0;
-    }
-
-    private void WitherEvent()
-    {
-        timeElapsed1 += Time.deltaTime;
-        if (timeElapsed1 >= witherTime && !IsWithered)
+        var point = 0;
+        switch (currentState)
         {
-            PlusWitherPercentage();
-            timeElapsed1 = 0.0f;
-        }
-    }
+            case State.NONE: break;
 
-    private void GrowEvent()
-    {
-        timeElapsed2 += Time.deltaTime;
-        if (timeElapsed2 >= growTime && !IsGrowed && !IsWithered)
-        {
-            GrowStage++;
-            timeElapsed2 = 0.0f;
+            case State.SPROUT:
+            case State.BUD:
+                point = 1;
+                break;
+
+            case State.FLOWER:
+                point = 3;
+                break;
+                            
+            default: return 0;
         }
+
+        // 水について
+        hasWater = true;
+
+        // 成長について
+        growTime = GetRandomFloat(startGrowTime, endGrowTime);
+        givenTime = this.elapsedTime;
+        return point;
     }
 
     private void Grow()
     {
-        render = this.GetComponent<MeshRenderer>();
-        switch(GrowStage)
+        hasWater = false;
+        ChangeState(currentState);
+    }
+
+    private void ChangeState(State type)
+    {
+        switch (type)
         {
-            case 0:
-                render.material = gStage1;
+            case State.NONE:
+                currentState = State.SPROUT;
+                this.msRender.material = materials[(int)State.NONE];
                 break;
-            case 1:
-                render.material = gStage2;
+            case State.SPROUT:
+                currentState = State.BUD;
+                this.msRender.material = materials[(int)State.SPROUT];
                 break;
-            case 2:
-                render.material = gStage3;
+            case State.BUD:
+                currentState = State.FLOWER;
+                this.msRender.material = materials[(int)State.BUD];
                 break;
-            case 3:
-                render.material = gStage4;
+            case State.FLOWER:
+                currentState = State.NONE;
+                this.msRender.material = materials[(int)State.FLOWER];
+                break;
+            case State.DIE:
+                currentState = State.DIE;
+                this.msRender.material = materials[(int)State.DIE];
                 break;
         }
     }
 
-    private void Wither()
+    private float GetRandomFloat(float start, float fin)
     {
-        render.material = wither;
-    }
-
-    void Update()
-    {
-        CheckGrowed();
-        CheckWhitered();
-        WitherEvent();
-        GrowEvent();
-        if (!IsWithered) Grow();
-        else Wither();
+        return Random.Range(start, fin);
     }
 
 }

@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space) && hoge.isWaterd)
             {
                 hoge.RemovedWater();
-                other.GetComponent<Flower>().MinusWhtherPercentage();
+                //other.GetComponent<Flower>().MinusWhtherPercentage();
                 Debug.Log("水をあげた");
 
                 audioSource.clip = mizuyaru;

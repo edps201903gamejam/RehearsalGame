@@ -19,14 +19,14 @@ public class FlowerController : MonoBehaviour
 
     private void CheckFin()
     {
-        flowerList = GameObject.FindGameObjectsWithTag("plant");
-        foreach (GameObject flower in flowerList)
-        {
-            Flower flo = flower.GetComponent<Flower>();
-            if (flo.IsGrowed || flo.IsWithered) { finCount++; }
-        }
-        if (finCount == flowerList.Length) { toResult(); }
-        else finCount = 0;
+        //flowerList = GameObject.FindGameObjectsWithTag("plant");
+        //foreach (GameObject flower in flowerList)
+        //{
+        //    Flower flo = flower.GetComponent<Flower>();
+        //    if (flo.IsGrowed || flo.IsWithered) { finCount++; }
+        //}
+        //if (finCount == flowerList.Length) { toResult(); }
+        //else finCount = 0;
     }
 
     private void toResult(){ Debug.Log("おわり"); }

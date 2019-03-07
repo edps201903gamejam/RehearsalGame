@@ -2,7 +2,6 @@
 
 public class WateringCan
 {
-
     public bool isWaterd;
 
     public WateringCan()

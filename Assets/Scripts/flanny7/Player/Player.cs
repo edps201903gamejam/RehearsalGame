@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     // Todo: tagの名前を入力する
-    private const string DEVIL_TAG = "Devil";
-    private const string WATER_SPOT_TAG = "WaterSpot";
-    private const string FLOWER_POT_TAG = "FlowerPot";
+    private const string DEVIL_TAG = "devil";
+    private const string WATER_SPOT_TAG = "water";
+    private const string FLOWER_TAG = "flower";
 
     [System.Serializable]
     public struct KeyConfig
@@ -36,6 +37,7 @@ public class Player : MonoBehaviour
 
     // Private
     private ANIMATION_STATE animState = ANIMATION_STATE.Wait;
+    private HashSet<GameObject> triggered = null;
 
 	private void Start ()
     {
@@ -44,12 +46,13 @@ public class Player : MonoBehaviour
         this.animator_ = GetComponent<Animator>();
 
         // null check
-        if (this.transform_ == null) { this.LogError("transform_ is null."); }
-        if (this.animator_ == null) { this.LogError("animator_ is null."); }
+        if (this.transform_ == null) { FyUtility.LogError("transform_ is null."); }
+        if (this.animator_ == null) { FyUtility.LogError("animator_ is null."); }
 
         // init
         this.animState = ANIMATION_STATE.Wait;
-	}
+        this.triggered = new HashSet<GameObject>();
+    }
 	
 	private void Update ()
     {
@@ -135,33 +138,23 @@ public class Player : MonoBehaviour
         this.animState = _animState;
     }
 
-    /// <summary>
-    /// 衝突判定
-    /// </summary>
-    /// <param name="_other">衝突対象</param>
     private void OnTriggerEnter(Collider _other)
     {
-        var target = _other.gameObject;
+        this.triggered.Add(_other.gameObject);
+    } 
 
-        switch (target.tag)
-        {
-            case DEVIL_TAG:
-                break;
-                
-            case WATER_SPOT_TAG:
-                break;
-
-            case FLOWER_POT_TAG:
-                break;
-        }
+    private void OnTriggerExit(Collider _other)
+    {
+        this.triggered.Remove(_other.gameObject);
     }
 
-    /// <summary>
-    /// エラーログをイイ感じに表示する
-    /// </summary>
-    /// <param name="_msg">ログに出力させる文字</param>
-    private void LogError(string _msg)
+    private bool IsTrigger(string _tag)
     {
-        Debug.LogError("<color=red>" + _msg + "</color>", this.gameObject); Debug.Break();
+        foreach (var c in this.triggered)
+        {
+            if (c.tag == _tag) { return true; }
+        }
+
+        return false;
     }
 }

@@ -5,6 +5,7 @@
 // プロジェクトルートに.gitフォルダが無かったらスルー。
 */
 
+/*
 using UnityEditor;
 using UnityEngine;
 using System.IO;
@@ -34,3 +35,4 @@ public class GitkeepMaker : AssetPostprocessor
 		}
 	}
 }
+*/

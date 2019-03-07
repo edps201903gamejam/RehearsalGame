@@ -5,8 +5,11 @@ public class Player : MonoBehaviour {
     private const string DEVIL_TAG = "devil";
     private const string WATER_SPOT_TAG = "water";
     private const string FLOWER_TAG = "flower";     private static readonly float FLOAT_MAX_VALUE = float.MaxValue;      [System.Serializable]     public struct KeyConfig     {         public KeyCode Up;         public KeyCode Down;         public KeyCode Left;         public KeyCode Right;         public KeyCode Retrun;     }      public enum ANIMATION_STATE     {         Wait,         Run,         Knockback,     }      // Serialize     [SerializeField]     private KeyConfig keyConfig;     [Space(8)]     [SerializeField]     private float moveSpeed = 5.0f;     [SerializeField]     private float knockbackTime = 3.0f;     [SerializeField]     private AudioClip giftWater;     [SerializeField]     private AudioClip getWater;      // Cache     private Transform transform_ = null;     private Animator animator_ = null;     private AudioSource audioSource_ = null;      // Private     private ANIMATION_STATE animState = ANIMATION_STATE.Wait;     private TriggerUtility trigger = null;
-    private WateringCan wateringCan;      private float elapsedTime = 0.0f;      /// knockback      private float knockbackStartTime = 0.0f;     private bool isKnockback = false;      private void Start ()     {         // cache         this.transform_ = this.transform;         this.animator_ = GetComponent<Animator>();         this.audioSource_ = GetComponent<AudioSource>();          // null check         if (this.transform_ == null) { FyUtility.LogError("transform_ is null."); }         if (this.animator_ == null) { FyUtility.LogError("animator_ is null."); }          // init         this.animState = ANIMATION_STATE.Wait;         this.trigger = new TriggerUtility();
-        this.wateringCan = new WateringCan();         this.elapsedTime = 0.0f;          this.knockbackStartTime = 0.0f;         this.isKnockback = false;     }         private void Update ()     {         this.elapsedTime += Time.deltaTime;
+    private WateringCan wateringCan;
+    private int score;      private float elapsedTime = 0.0f;      /// knockback      private float knockbackStartTime = 0.0f;     private bool isKnockback = false;      private void Start ()     {         // cache         this.transform_ = this.transform;         this.animator_ = GetComponent<Animator>();         this.audioSource_ = GetComponent<AudioSource>();          // null check         if (this.transform_ == null) { FyUtility.LogError("transform_ is null."); }         if (this.animator_ == null) { FyUtility.LogError("animator_ is null."); }          // init         this.animState = ANIMATION_STATE.Wait;         this.trigger = new TriggerUtility();
+        this.wateringCan = new WateringCan();         this.elapsedTime = 0.0f;          this.knockbackStartTime = 0.0f;         this.isKnockback = false;
+        this.score = 0;     }         private void Update ()     {         this.elapsedTime += Time.deltaTime;
+       
         this.UpdateStatus();
 
         if (this.isKnockback) { return; }
@@ -19,7 +22,6 @@ public class Player : MonoBehaviour {
         var isInFlower = this.trigger.ContainWithTag(FLOWER_TAG);
         var isInWater = this.trigger.ContainWithTag(WATER_SPOT_TAG);
         if (isInWater && isInFlower) { Debug.LogWarning("waterとflowerが重なっています"); }
-
         if (isInFlower) { GiftWater(this.trigger.FindGameObjectWithTag(FLOWER_TAG)); }         else if (isInWater) { GetWater(); }
     }
 
@@ -41,9 +43,9 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            if (this.trigger.ContainWithTag(FLOWER_TAG))
+            if (this.trigger.ContainWithTag(DEVIL_TAG))
             {
-                var knockbackStartTime = this.trigger.FindItemWithTag(FLOWER_TAG).enterTime;
+                var knockbackStartTime = this.trigger.FindItemWithTag(DEVIL_TAG).enterTime;
                 var isKnockbackStart = knockbackStartTime != -1;
                 if (isKnockbackStart)
                 {
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour {
         if (flower == null) { return false; }
 
         wateringCan.RemovedWater();
-        var point = flower.GetPoint();
+        score += flower.GetPoint();
 
         audioSource_.clip = giftWater;
         audioSource_.Play();
@@ -81,6 +83,11 @@ public class Player : MonoBehaviour {
         audioSource_.Play();
 
         return true;
+    }
+
+    public int getScore()
+    {
+        return score;
     }
 
     // Trigger

@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - plant
   - water
-  - plant1
+  - flower
+  - devil
   layers:
   - Default
   - TransparentFX

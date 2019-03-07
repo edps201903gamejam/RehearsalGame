@@ -7,7 +7,7 @@ public class ResultTester : MonoBehaviour
     {
         public int FlowerCount;
         public int DieCount;
-        public BadgeComponent.BADGE_TYPE BadgeType;
+        public BadgeView.BADGE_TYPE BadgeType;
     }
 
     [SerializeField]
@@ -15,7 +15,7 @@ public class ResultTester : MonoBehaviour
     [SerializeField]
     private KeyCode closeKeyCode = KeyCode.X;
     [SerializeField]
-    private ResultUIManager uIManager = null;
+    private ResultUIController uIManager = null;
     [SerializeField]
     private Param param;
 

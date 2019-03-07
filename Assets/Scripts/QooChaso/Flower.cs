@@ -51,6 +51,13 @@ public class Flower : MonoBehaviour
 
     public int GetPoint()
     {
+        if (currentState == State.FLOWER)
+        {
+            hasWater = true;
+            ChangeState(State.NONE);
+            return 3;
+        }
+
         if (hasWater) { return 0; }
 
         var point = 0;
@@ -63,12 +70,6 @@ public class Flower : MonoBehaviour
                 point = 1;
                 break;
 
-            case State.FLOWER:
-                point = 3;
-                currentState = State.NONE;
-                this.msRender.material = materials[(int)State.NONE];
-                break;
-                            
             default: return 0;
         }
 
@@ -83,6 +84,8 @@ public class Flower : MonoBehaviour
 
     private void Grow()
     {
+        if (!hasWater) { return; }
+
         hasWater = false;
         ChangeState(currentState);
     }

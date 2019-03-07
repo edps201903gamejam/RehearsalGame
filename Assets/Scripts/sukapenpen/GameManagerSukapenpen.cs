@@ -59,6 +59,6 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 	private void DoPlay(float _timeLimit)
 	{
 		GameSceneUIManager.Instance.OnUpdate(_timeLimit);
-		
+		PlayerController.Instance.OnUpdate(_timeLimit);
 	}
 }

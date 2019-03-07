@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/GameScene_flanny7.unity
-    guid: dbfa0ea0f3595b4408dc45537656ed96
+    path: Assets/Scenes/flanny7/TitleTest.unity
+    guid: c7c2baabf6ef6b944b44b44b277da609
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: bde099320fb3c2e47842282318f3f632
   m_configObjects: {}

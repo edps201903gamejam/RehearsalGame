@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class WaterComponent : MonoBehaviour
+public class WateringCanView : MonoBehaviour
 {
     public enum STATE
     {

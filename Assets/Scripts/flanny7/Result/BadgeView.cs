@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class BadgeComponent : MonoBehaviour
+public class BadgeView : MonoBehaviour
 {
     [System.Serializable]
     public enum BADGE_TYPE
@@ -9,9 +9,7 @@ public class BadgeComponent : MonoBehaviour
         Bad = 0,
         Excellent = 1,
     }
-
-    public BADGE_TYPE BadgeType { get { return this.type; } set { this.type = value; } }
-
+    
     // Serialize cache
     [SerializeField]
     private Image image_ = null;
@@ -19,14 +17,15 @@ public class BadgeComponent : MonoBehaviour
     [SerializeField]
     private Sprite[] sprites = null;
     [SerializeField]
-    private BADGE_TYPE type = BADGE_TYPE.Bad;
+    private BADGE_TYPE badgeType = BADGE_TYPE.Bad;
+
+    public void Set(BADGE_TYPE _type)
+    {
+        this.badgeType = _type;
+        this.image_.sprite = sprites[(int)this.badgeType];
+    }
 
 	private void Start ()
     {
-	}
-	
-	private void Update ()
-    {
-        this.image_.sprite = sprites[(int)this.type];
 	}
 }

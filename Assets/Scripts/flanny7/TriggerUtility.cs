@@ -50,9 +50,16 @@ public sealed class TriggerUtility
     {
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.tag == _tag)
+            try
             {
-                return this.items[i].gameObject;
+                if (this.items[i].gameObject.tag == _tag)
+                {
+                    return this.items[i].gameObject;
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 
@@ -64,9 +71,16 @@ public sealed class TriggerUtility
         var results = new List<GameObject>();
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.tag == _tag)
+            try
             {
-                results.Add(this.items[i].gameObject);
+                if (this.items[i].gameObject.tag == _tag)
+                {
+                    results.Add(this.items[i].gameObject);
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 
@@ -79,9 +93,16 @@ public sealed class TriggerUtility
     {
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.tag == _tag)
+            try
             {
-                return this.items[i];
+                if (this.items[i].gameObject.tag == _tag)
+                {
+                    return this.items[i];
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 
@@ -93,9 +114,16 @@ public sealed class TriggerUtility
         var results = new List<Item>();
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.tag == _tag)
+            try
             {
-                results.Add(this.items[i]);
+                if (this.items[i].gameObject.tag == _tag)
+                {
+                    results.Add(this.items[i]);
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 
@@ -108,9 +136,16 @@ public sealed class TriggerUtility
     {
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.Equals(_gameObject))
+            try
             {
-                return true;
+                if (this.items[i].gameObject.Equals(_gameObject))
+                {
+                    return true;
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 
@@ -121,9 +156,16 @@ public sealed class TriggerUtility
     {
         for (var i = 0; i < this.items.Count; ++i)
         {
-            if (this.items[i].gameObject.tag.Equals(_tag))
+            try
             {
-                return true;
+                if (this.items[i].gameObject.tag.Equals(_tag))
+                {
+                    return true;
+                }
+            }
+            catch (MissingReferenceException e)
+            {
+                this.items.RemoveAt(i);
             }
         }
 

@@ -34,6 +34,7 @@ public class Flower : MonoBehaviour
     private void Start()
     {
         msRender = GetComponent<MeshRenderer>();
+        this.msRender.material = materials[(int)State.NONE];
 
         currentState = State.NONE;
         elapsedTime = 0;

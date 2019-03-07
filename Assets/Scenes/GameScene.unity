@@ -2385,15 +2385,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 006be0acf2ca24940b1a33113217a7bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GrowStage: 0
-  WitherPercentage: 0
-  IsGrowed: 0
-  IsWithered: 0
-  gStage1: {fileID: 2100000, guid: 89e75b4a869e34801b2769cc81ebc06e, type: 2}
-  gStage2: {fileID: 2100000, guid: fb6794cf4370542ba85f87a0c5a71b1a, type: 2}
-  gStage3: {fileID: 2100000, guid: a7646215e640d4f41a9875f6272c9684, type: 2}
-  gStage4: {fileID: 2100000, guid: 56f83ef27ebcb4d2a981733a9d769957, type: 2}
-  wither: {fileID: 2100000, guid: 72ec46bb58f1248fb964541222051f0b, type: 2}
+  materials:
+  - {fileID: 2100000, guid: 89e75b4a869e34801b2769cc81ebc06e, type: 2}
+  - {fileID: 2100000, guid: fb6794cf4370542ba85f87a0c5a71b1a, type: 2}
+  - {fileID: 2100000, guid: a7646215e640d4f41a9875f6272c9684, type: 2}
+  - {fileID: 2100000, guid: 56f83ef27ebcb4d2a981733a9d769957, type: 2}
+  - {fileID: 2100000, guid: 72ec46bb58f1248fb964541222051f0b, type: 2}
+  startGrowTime: 1
+  endGrowTime: 10
 --- !u!135 &645164206
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3199,6 +3198,9 @@ MonoBehaviour:
     Right: 100
     Retrun: 32
   moveSpeed: 5
+  knockbackTime: 3
+  mizuyaru: {fileID: 0}
+  mizukumu: {fileID: 0}
 --- !u!95 &773677477
 Animator:
   serializedVersion: 3

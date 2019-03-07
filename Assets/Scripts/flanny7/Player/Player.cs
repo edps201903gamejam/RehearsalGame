@@ -41,9 +41,9 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            if (this.trigger.ContainWithTag(FLOWER_TAG))
+            if (this.trigger.ContainWithTag(DEVIL_TAG))
             {
-                var knockbackStartTime = this.trigger.FindItemWithTag(FLOWER_TAG).enterTime;
+                var knockbackStartTime = this.trigger.FindItemWithTag(DEVIL_TAG).enterTime;
                 var isKnockbackStart = knockbackStartTime != -1;
                 if (isKnockbackStart)
                 {

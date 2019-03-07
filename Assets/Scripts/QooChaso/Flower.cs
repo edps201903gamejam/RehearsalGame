@@ -24,11 +24,11 @@ public class Flower : MonoBehaviour
     private State currentState;
 
     private float elapsedTime;
-
+    private float witherElapsedTime;
     private float givenTime;
     private float growTime;
+    private float witherParcentage; //100になると花がかれる。GetPointを呼び出すと0になる。
     private bool CanGrow { get { return growTime <= (elapsedTime - givenTime) && hasWater; } }
-
     private bool hasWater;
 
     private void Start()
@@ -37,16 +37,28 @@ public class Flower : MonoBehaviour
         this.msRender.material = materials[(int)State.NONE];
 
         currentState = State.NONE;
+
         elapsedTime = 0;
+        witherElapsedTime = 0;
         givenTime = 0;
         growTime = GetRandomFloat(startGrowTime, endGrowTime);
+        witherParcentage = 0;
         hasWater = true;
     }
 
     public void OnUpdate()
     {
         elapsedTime += Time.deltaTime;
+        witherElapsedTime += Time.deltaTime;
         if (CanGrow) { Grow(); }
+
+        //枯れる処理
+        if(witherElapsedTime >= 1)
+        {
+            witherParcentage += 10; //1秒ごとに何%上昇か
+            witherElapsedTime = 0.0f;
+        }
+        if(witherParcentage >= 100){ Wither(); }
     }
 
     public int GetPoint()
@@ -54,7 +66,7 @@ public class Flower : MonoBehaviour
         if (currentState == State.FLOWER)
         {
             hasWater = true;
-            ChangeState(State.NONE);
+            ChangeState(State.FLOWER);
             return 3;
         }
 
@@ -79,6 +91,8 @@ public class Flower : MonoBehaviour
         // 成長について
         growTime = GetRandomFloat(startGrowTime, endGrowTime);
         givenTime = this.elapsedTime;
+        //枯れゲージを初期化
+        witherParcentage = 0;
         return point;
     }
 
@@ -90,9 +104,9 @@ public class Flower : MonoBehaviour
         ChangeState(currentState);
     }
 
-    private void ChangeState(State type)
+    private void ChangeState(State current)
     {
-        switch (type)
+        switch (current)
         {
             case State.NONE:
                 currentState = State.SPROUT;
@@ -106,12 +120,21 @@ public class Flower : MonoBehaviour
                 currentState = State.FLOWER;
                 this.msRender.material = materials[(int)State.FLOWER];
                 break;
-            case State.FLOWER: break;
-            case State.DIE:
-                currentState = State.DIE;
-                this.msRender.material = materials[(int)State.DIE];
+            case State.FLOWER:
+                currentState = State.NONE;
+                this.msRender.material = materials[(int)State.NONE];
                 break;
+            //case State.DIE:
+                //currentState = State.DIE;
+                //this.msRender.material = materials[(int)State.DIE];
+                //break;
         }
+    }
+
+    private void Wither()
+    {
+        currentState = State.DIE;
+        this.msRender.material = materials[(int)State.DIE];
     }
 
     private float GetRandomFloat(float start, float fin)

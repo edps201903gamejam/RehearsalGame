@@ -19,34 +19,4 @@ public class PlayerController : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-
-    void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag == "plant")
-        {
-            if (Input.GetKeyDown(KeyCode.Space) && hoge.isWaterd)
-            {
-                hoge.RemovedWater();
-                //other.GetComponent<Flower>().MinusWhtherPercentage();
-                Debug.Log("水をあげた");
-
-                audioSource.clip = mizuyaru;
-                audioSource.Play();
-
-            }
-        }
-
-        if (other.gameObject.tag == "water")
-        {
-            if (Input.GetKeyDown(KeyCode.Space) && !hoge.isWaterd)
-            {
-                hoge.ToMaxWaterGase();
-                Debug.Log("水をくんだ");
-
-                audioSource.clip = mizukumu;
-                audioSource.Play();
-            }
-        }
-    }
-
 }

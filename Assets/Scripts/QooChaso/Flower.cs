@@ -33,7 +33,7 @@ public class Flower : MonoBehaviour
 
     private void Start()
     {
-        msRender = GetComponent<MeshRenderer>();
+        msRender = this.GetComponent<MeshRenderer>();
         this.msRender.material = materials[(int)State.NONE];
 
         currentState = State.NONE;
@@ -46,7 +46,6 @@ public class Flower : MonoBehaviour
     public void OnUpdate()
     {
         elapsedTime += Time.deltaTime;
-
         if (CanGrow) { Grow(); }
     }
 
@@ -66,6 +65,8 @@ public class Flower : MonoBehaviour
 
             case State.FLOWER:
                 point = 3;
+                currentState = State.NONE;
+                this.msRender.material = materials[(int)State.NONE];
                 break;
                             
             default: return 0;
@@ -92,20 +93,17 @@ public class Flower : MonoBehaviour
         {
             case State.NONE:
                 currentState = State.SPROUT;
-                this.msRender.material = materials[(int)State.NONE];
+                this.msRender.material = materials[(int)State.SPROUT];
                 break;
             case State.SPROUT:
                 currentState = State.BUD;
-                this.msRender.material = materials[(int)State.SPROUT];
+                this.msRender.material = materials[(int)State.BUD];
                 break;
             case State.BUD:
                 currentState = State.FLOWER;
-                this.msRender.material = materials[(int)State.BUD];
-                break;
-            case State.FLOWER:
-                currentState = State.NONE;
                 this.msRender.material = materials[(int)State.FLOWER];
                 break;
+            case State.FLOWER: break;
             case State.DIE:
                 currentState = State.DIE;
                 this.msRender.material = materials[(int)State.DIE];

@@ -4,18 +4,28 @@ using UnityEngine;
 
 public class FlowerController : MonoBehaviour
 {
-    public GameObject flower;
+    [SerializeField]
+    private GameObject flower1;
+    private GameObject flower2;
+    private GameObject flower3;
+    private GameObject flower4;
     private GameObject[] flowerList;
     private int finCount = 0;
 
     void Start()
     {
-        Instantiate(flower, new Vector3(-4.2f, 1.0f, 4.2f), Quaternion.Euler(35f, 0, 0));
-        Instantiate(flower, new Vector3(4.4f, 1.0f, -4.0f), Quaternion.Euler(55f, 0, 0));
-        Instantiate(flower, new Vector3(-4.2f, 1.0f, -4.0f), Quaternion.Euler(55f, 0, 0));
+        flower2 = Instantiate(flower1, new Vector3(-4.5f, 0.35f, 4.5f), Quaternion.Euler(0, 0, 0));
+        flower3 = Instantiate(flower1, new Vector3(4.5f, 0.35f, -4.5f), Quaternion.Euler(0, 0, 0));
+        flower4 = Instantiate(flower1, new Vector3(-4.5f, 0.35f, -4.5f), Quaternion.Euler(0, 0, 0));
     }
 
-    void Update(){ CheckFin(); }
+    void Update()
+    {
+        flower1.transform.GetChild(0).gameObject.GetComponent<Flower>().OnUpdate();
+        flower2.transform.GetChild(0).gameObject.GetComponent<Flower>().OnUpdate();
+        flower3.transform.GetChild(0).gameObject.GetComponent<Flower>().OnUpdate();
+        flower4.transform.GetChild(0).gameObject.GetComponent<Flower>().OnUpdate();
+    }
 
     private void CheckFin()
     {

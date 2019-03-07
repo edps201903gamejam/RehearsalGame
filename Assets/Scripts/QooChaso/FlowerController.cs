@@ -28,6 +28,11 @@ public class FlowerController : MonoBehaviour
         }
     }
 
+    private GameObject[] GetObjects()
+    {
+        return flowerList;
+    }
+
     private void toResult(){ Debug.Log("おわり"); }
 
 }

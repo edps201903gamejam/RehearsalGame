@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Flower : MonoBehaviour
 {
-    private enum State
+    public enum State
     {
         NONE,
         SPROUT,
@@ -21,7 +21,11 @@ public class Flower : MonoBehaviour
     private float endGrowTime;
 
     private MeshRenderer msRender;
-    private State currentState;
+    public State CurrentState
+    {
+        get;
+        private set;
+    }
 
     private float elapsedTime;
     private float witherElapsedTime;
@@ -36,7 +40,7 @@ public class Flower : MonoBehaviour
         msRender = this.GetComponent<MeshRenderer>();
         this.msRender.material = materials[(int)State.NONE];
 
-        currentState = State.NONE;
+        CurrentState = State.NONE;
 
         elapsedTime = 0;
         witherElapsedTime = 0;
@@ -63,7 +67,7 @@ public class Flower : MonoBehaviour
 
     public int GetPoint()
     {
-        if (currentState == State.FLOWER)
+        if (CurrentState == State.FLOWER)
         {
             hasWater = true;
             ChangeState(State.FLOWER);
@@ -73,7 +77,7 @@ public class Flower : MonoBehaviour
         if (hasWater) { return 0; }
 
         var point = 0;
-        switch (currentState)
+        switch (CurrentState)
         {
             case State.NONE: break;
 
@@ -103,7 +107,7 @@ public class Flower : MonoBehaviour
         if (!hasWater) { return; }
 
         hasWater = false;
-        ChangeState(currentState);
+        ChangeState(CurrentState);
     }
 
     private void ChangeState(State current)
@@ -111,19 +115,19 @@ public class Flower : MonoBehaviour
         switch (current)
         {
             case State.NONE:
-                currentState = State.SPROUT;
+                CurrentState = State.SPROUT;
                 this.msRender.material = materials[(int)State.SPROUT];
                 break;
             case State.SPROUT:
-                currentState = State.BUD;
+                CurrentState = State.BUD;
                 this.msRender.material = materials[(int)State.BUD];
                 break;
             case State.BUD:
-                currentState = State.FLOWER;
+                CurrentState = State.FLOWER;
                 this.msRender.material = materials[(int)State.FLOWER];
                 break;
             case State.FLOWER:
-                currentState = State.NONE;
+                CurrentState = State.NONE;
                 this.msRender.material = materials[(int)State.NONE];
                 break;
         }
@@ -131,7 +135,7 @@ public class Flower : MonoBehaviour
 
     private void Wither()
     {
-        currentState = State.DIE;
+        CurrentState = State.DIE;
         this.msRender.material = materials[(int)State.DIE];
     }
 

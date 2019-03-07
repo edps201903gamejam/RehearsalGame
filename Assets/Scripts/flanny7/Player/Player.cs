@@ -59,9 +59,16 @@ public class Player : MonoBehaviour {
 
     private bool GiftWater(GameObject target)
     {
+        var flower = target.GetComponent<Flower>();
+
+
+        if(flower.CurrentState == Flower.State.FLOWER)
+        {
+            score += flower.GetPoint();
+        }
+
         if (!wateringCan.isWaterd) { return false; }
 
-        var flower = target.GetComponent<Flower>();
         if (flower == null) { return false; }
 
         wateringCan.RemovedWater();

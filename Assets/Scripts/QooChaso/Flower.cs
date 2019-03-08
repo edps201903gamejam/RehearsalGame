@@ -19,6 +19,10 @@ public class Flower : MonoBehaviour
     private float startGrowTime;
     [SerializeField]
     private float endGrowTime;
+    [SerializeField]
+    private FlowerGrowingView growingView = null;
+    [SerializeField]
+    private FlowerPointMessageView pointMesageView = null;
 
     private MeshRenderer msRender;
     public State CurrentState
@@ -34,6 +38,8 @@ public class Flower : MonoBehaviour
     private float witherParcentage; //100になると花がかれる。GetPointを呼び出すと0になる。
     private bool CanGrow { get { return growTime <= (elapsedTime - givenTime) && hasWater; } }
     private bool hasWater;
+
+    private float GrowingRate { get { return (this.elapsedTime - this.givenTime) / this.growTime; } }
 
     private void Start()
     {
@@ -55,14 +61,16 @@ public class Flower : MonoBehaviour
         elapsedTime += Time.deltaTime;
         witherElapsedTime += Time.deltaTime;
         if (CanGrow) { Grow(); }
+        
+        this.growingView.Set(this.GrowingRate);
 
         //枯れる処理
-        if(witherElapsedTime >= 1)
+        if(1 <= witherElapsedTime)
         {
             witherParcentage += 10; //1秒ごとに何%上昇か
             witherElapsedTime = 0.0f;
         }
-        if(witherParcentage >= 100){ Wither(); }
+        if(100 <= witherParcentage){ Wither(); }
     }
 
     public int GetPoint()
@@ -99,6 +107,7 @@ public class Flower : MonoBehaviour
         //枯れゲージを初期化
         witherParcentage = 0;
 
+        this.pointMesageView.Set(FlowerPointMessageView.State.None);
         return point;
     }
 
@@ -108,6 +117,20 @@ public class Flower : MonoBehaviour
 
         hasWater = false;
         ChangeState(CurrentState);
+
+        if (CurrentState == State.FLOWER)
+        {
+            this.pointMesageView.Set(FlowerPointMessageView.State.CanGetFlower);
+        }
+        else if (CurrentState == State.SPROUT ||
+                 CurrentState == State.BUD)
+        {
+            this.pointMesageView.Set(FlowerPointMessageView.State.CanSetWater);
+        }
+        else
+        {
+            this.pointMesageView.Set(FlowerPointMessageView.State.None);
+        }
     }
 
     private void ChangeState(State current)
@@ -137,6 +160,8 @@ public class Flower : MonoBehaviour
     {
         CurrentState = State.DIE;
         this.msRender.material = materials[(int)State.DIE];
+        this.pointMesageView.Set(FlowerPointMessageView.State.None);
+        this.growingView.Set(0);
     }
 
     private float GetRandomFloat(float start, float fin)

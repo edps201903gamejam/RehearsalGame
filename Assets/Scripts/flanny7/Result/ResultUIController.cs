@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
-public class ResultUIController : MonoBehaviour
+public class ResultUIController : SingletonMonoBehaviour<ResultUIController>
 {
     private static readonly float FLOAT_MAX_VALUE = float.MaxValue;
 
     [SerializeField]
     private CanvasGroup canvasGroup_ = null;
     [SerializeField]
-    private CounterView counter_ = null;
+    private Image image = null;
     [SerializeField]
-    private BadgeView badge_ = null;
+    private Sprite player1Sprite = null;
+    [SerializeField]
+    private Sprite player2Sprite = null;
     [Space(8)]
     [SerializeField]
     private float fadeInTime = 1.0f;
@@ -28,8 +31,6 @@ public class ResultUIController : MonoBehaviour
     private void Start()
     {
         FyUtility.NullCheck(this.canvasGroup_, this.gameObject);
-        FyUtility.NullCheck(this.counter_, this.gameObject);
-        FyUtility.NullCheck(this.badge_, this.gameObject);
 
         this.elapsedTime = 0.0f;
         this.isActive = false;
@@ -55,10 +56,9 @@ public class ResultUIController : MonoBehaviour
         }
     }
 
-    public void Open(int _flowerCount, int _dieCount, BadgeView.BADGE_TYPE _badgeType)
+    public void Open(int _player)
     {
-        this.counter_.Set(_flowerCount ,_dieCount);
-        this.badge_.Set(_badgeType);
+        this.image.sprite = (_player == 1) ? player1Sprite : player2Sprite;
 
         this.fadeInStartTime = this.elapsedTime;
     }

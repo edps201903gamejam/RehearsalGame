@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float knockbackTime = 3.0f;
     [SerializeField] private AudioClip giftWater;
     [SerializeField] private AudioClip getWater;
+    [SerializeField] private WateringCanView canView = null;
+    [SerializeField] private ScoreTextView scoreTextView = null;
 
     // Cache
     private Transform transform_ = null;
@@ -42,7 +44,10 @@ public class Player : MonoBehaviour
     private ANIMATION_STATE animState = ANIMATION_STATE.Wait;
     private TriggerUtility trigger = null;
     private WateringCan wateringCan;
-    private int score;
+
+    private int flowerCount = 0;
+    private int giftWaterCount = 0;
+    public int Score { get { return this.flowerCount * 3 + this.giftWaterCount; } }
 
     private float elapsedTime = 0.0f;
 
@@ -78,8 +83,11 @@ public class Player : MonoBehaviour
 
         this.knockbackStartTime = 0.0f;
         this.isKnockback = false;
-        this.score = 0;
+        this.flowerCount = 0;
+        this.giftWaterCount = 0;
         this.isGameInitial = true;
+
+        this.canView.StartEmpty();
     }
 
     public void OnUpdate()
@@ -253,34 +261,31 @@ public class Player : MonoBehaviour
 
     private bool GiftWater(GameObject target)
     {
-<<<<<<< HEAD
         var flower = target.GetComponent<Flower>();
 
 
         if(flower.CurrentState == Flower.State.FLOWER)
         {
-            score += flower.GetPoint();
+            if (0 < flower.GetPoint())
+            {
+                ++this.flowerCount;
+                this.scoreTextView.IncreaseFlowerCount();
+                return true;
+            }
         }
 
         if (!wateringCan.isWaterd) { return false; }
 
         if (flower == null) { return false; }
-=======
-        if (!wateringCan.isWaterd)
-        {
-            return false;
-        }
-
-        var flower = target.GetComponent<Flower>();
-        if (flower == null)
-        {
-            return false;
-        }
->>>>>>> origin/sukapenpen
 
         wateringCan.RemovedWater();
-        score += flower.GetPoint();
+        if (0 < flower.GetPoint())
+        {
+            ++this.giftWaterCount;
+            this.scoreTextView.IncreaseGiftWaterCount();
+        }
 
+        this.canView.StartEmpty();
         audioSource_.clip = giftWater;
         audioSource_.Play();
 
@@ -296,15 +301,11 @@ public class Player : MonoBehaviour
 
         wateringCan.ToMaxWaterGase();
 
+        this.canView.StartFill();
         audioSource_.clip = getWater;
         audioSource_.Play();
 
         return true;
-    }
-
-    public int getScore()
-    {
-        return score;
     }
 
     // Trigger

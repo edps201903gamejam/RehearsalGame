@@ -26,7 +26,5 @@ public class ResultTester : MonoBehaviour
 
     private void Update ()
     {
-        if (Input.GetKeyDown(this.openKeyCode)) { this.uIManager.Open(this.param.FlowerCount, this.param.DieCount, this.param.BadgeType); }
-        if (Input.GetKeyDown(this.closeKeyCode)) { this.uIManager.Close(); }
     }
 }

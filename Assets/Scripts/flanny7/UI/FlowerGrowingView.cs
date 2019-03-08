@@ -14,7 +14,7 @@ public class FlowerGrowingView : MonoBehaviour
 
     public void Set(float _fillAmount)
     {
-        this.fillAmount = _fillAmount;
+        this.fillAmount = 1 - _fillAmount;
         this.meshRender.material.SetFloat("_Cutoff", this.fillAmount);
     }
 }

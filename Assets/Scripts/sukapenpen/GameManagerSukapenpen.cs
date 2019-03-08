@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpen>
 {
@@ -11,9 +10,14 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 		Result,
 
 		Length,
-	}
-	
-	[SerializeField]
+    }
+    [SerializeField]
+    private KeyCode actionKey1;
+    [SerializeField]
+    private KeyCode actionKey2;
+    [SerializeField]
+    private string titleSceneName = string.Empty;
+    [SerializeField]
 	private float timeLimit = 60;
 	private float maxStartTime = 4;
 	private State currentState = State.Length;
@@ -40,14 +44,27 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 				timeLimit -= Time.deltaTime;
 				this.DoPlay(timeLimit);
 				
-				if ((int) timeLimit < 0)
+				if ((int) timeLimit < 0 || FlowerController.Instance.IsAllWithered())
 				{
 					currentState = State.Result;
+
+                    timeLimit = 0;
+                    PlayUIController.Instance.Close();
+                    int one, two = 0;
+                    PlayerController.Instance.GetScores(out one, out two);
+                    var win = (one < two) ? 2 : 1;
+                    ResultUIController.Instance.Open(win);
 				}
 				break;
 			
 			case State.Result:
-				this.DoResult();
+                timeLimit -= Time.deltaTime;
+                this.DoResult();
+
+                if (timeLimit <= -3.0f && (Input.GetKeyDown(this.actionKey1) || Input.GetKeyDown(this.actionKey2)))
+                {
+                    SceneManager.LoadScene(this.titleSceneName);
+                }
 				break;
 		}
 	}
@@ -61,10 +78,11 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 	{
 		GameSceneUIManager.Instance.OnUpdate(_timeLimit);
 		PlayerController.Instance.OnUpdate(_timeLimit);
+        FlowerController.Instance.OnUpdate();
 	}
 
 	private void DoResult()
 	{
-		Debug.Log("リザルトの処理");
+        ResultUIController.Instance.OnUpdate();
 	}
 }

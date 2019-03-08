@@ -23,13 +23,13 @@ public class WateringCanView : MonoBehaviour
     private float animElapsedTime = 0.0f;
     
     // Propaty
-    public float FillImageFillAmount
+    private float FillImageFillAmount
     {
         get { return this._fillImage.fillAmount; }
-        private set { this._fillImage.fillAmount = value; }
+        set { this._fillImage.fillAmount = value; }
     }
 
-    public float AnimTimeRate { get { return this.animElapsedTime / this.animationTime; } }
+    private float AnimTimeRate { get { return this.animElapsedTime / this.animationTime; } }
     
     // Public Func
     public void StartEmpty()

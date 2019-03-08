@@ -5,19 +5,25 @@ using UnityEngine;
 public class PlayerController : SingletonMonoBehaviour<PlayerController>
 {
     [SerializeField]
-    private GameObject player1;
+    private Player player1 = null;
     [SerializeField]
-    private GameObject player2;
+    private Player player2 = null;
+
+    public void GetScores(out int _player1Score, out int _player2Score)
+    {
+        _player1Score = this.player1.Score;
+        _player2Score = this.player2.Score;
+    }
 
     private void Start()
     {
-        player1 = Instantiate(player1, new Vector3(3.0f, 0.35f, 0.0f), Quaternion.Euler(0, 0, 0));
-        player2 = Instantiate(player2, new Vector3(-3.0f, 0.0f, 0.0f), Quaternion.Euler(0, 0, 0));
+        FyUtility.NullCheck(this.player1, this.gameObject);
+        FyUtility.NullCheck(this.player2, this.gameObject);
     }
 
     public void OnUpdate(float _timeLimit)
     {
-        player1.GetComponent<Player>().OnUpdate();
-        player2.GetComponent<Player>().OnUpdate();
+        this.player1.OnUpdate();
+        this.player2.OnUpdate();
     }
 }

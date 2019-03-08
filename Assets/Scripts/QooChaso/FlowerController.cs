@@ -2,37 +2,31 @@
 
 using UnityEngine;
 
-public class FlowerController : MonoBehaviour
+public class FlowerController : SingletonMonoBehaviour<FlowerController>
 {
     [SerializeField]
-    private GameObject flower1;
-    private GameObject[] flowerList;
-    private int finCount = 0;
+    private Flower[] flowers = null;
 
-    void Start()
+    private void Start()
     {
-        flowerList = new GameObject[] 
-        {
-            Instantiate(flower1, new Vector3(4.5f, 0.35f, 4.5f), Quaternion.Euler(0, 0, 0)),
-            Instantiate(flower1, new Vector3(-4.5f, 0.35f, 4.5f), Quaternion.Euler(0, 0, 0)),
-            Instantiate(flower1, new Vector3(4.5f, 0.35f, -4.5f), Quaternion.Euler(0, 0, 0)),
-            Instantiate(flower1, new Vector3(-4.5f, 0.35f, -4.5f), Quaternion.Euler(0, 0, 0))
-        };
+
     }
 
-    void Update()
+    public void OnUpdate()
     {
-        foreach(GameObject i in flowerList)
+        for (var i = 0; i < this.flowers.Length; ++i)
         {
-            i.transform.GetChild(0).gameObject.GetComponent<Flower>().OnUpdate();
+            this.flowers[i].OnUpdate();
         }
     }
 
-    public GameObject[] GetObjects()
+    public bool IsAllWithered()
     {
-        return flowerList;
+        for (var i = 0; i < this.flowers.Length; ++i)
+        {
+            if (this.flowers[i].CurrentState != Flower.State.DIE) { return false; }
+        }
+
+        return true;
     }
-
-    private void toResult(){ Debug.Log("おわり"); }
-
 }

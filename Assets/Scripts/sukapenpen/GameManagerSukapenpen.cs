@@ -29,7 +29,7 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 		{
 			case State.Initial:
 				maxStartTime -= Time.deltaTime;
-				DoInitial(maxStartTime);
+				this.DoInitial(maxStartTime);
 				if ((int) maxStartTime < 0)
 				{
 					currentState = State.Play;
@@ -38,7 +38,8 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 			
 			case State.Play:
 				timeLimit -= Time.deltaTime;
-				DoPlay(timeLimit);
+				this.DoPlay(timeLimit);
+				
 				if ((int) timeLimit < 0)
 				{
 					currentState = State.Result;
@@ -46,7 +47,7 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 				break;
 			
 			case State.Result:
-				Debug.Log("リザルトの処理");
+				this.DoResult();
 				break;
 		}
 	}
@@ -59,6 +60,11 @@ public class GameManagerSukapenpen : SingletonMonoBehaviour<GameManagerSukapenpe
 	private void DoPlay(float _timeLimit)
 	{
 		GameSceneUIManager.Instance.OnUpdate(_timeLimit);
-		
+		PlayerController.Instance.OnUpdate(_timeLimit);
+	}
+
+	private void DoResult()
+	{
+		Debug.Log("リザルトの処理");
 	}
 }
